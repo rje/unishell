@@ -1,4 +1,4 @@
-# Interactive C# Shell for Unity3d
+# Interactive C# Shell for the Unity3d editor
 
 ## Installation
 Import the asset bundle into your project or copy the Mono.CSharp.dll and ConsoleWindow.cs file from this project into your project in an Editor folder.
