@@ -29,8 +29,9 @@ Print out all available shell commands
 ### clear
 Clear the output text area
 
-
 ## Notes & Bugs
 * Don't forget to end your statements and expressions with a semicolon
 * Playing and stopping the game can reset the shell variables
 * The basic editor mechanics still apply -- e.g. changes made in play mode are not persisted after you stop gameplay, but changes made in editing mode are permanent
+* Bug: Autocomplete doesn't work reliably yet
+* Bug: Autocomplete doesn't let you cycle through available matches

@@ -144,8 +144,8 @@ public class ConsoleWindow : EditorWindow {
 		consoleText += "\thelp: Prints this message\n";
 		consoleText += "\n";
 		consoleText += "Current shortcuts:\n";
-		consoleText += "ctrl-space: autocomplete current buffer";
-		consoleText += "up arrow/down arrow: go through previous commands";
+		consoleText += "\tctrl-space: autocomplete current buffer\n";
+		consoleText += "\tup arrow/down arrow: go through previous commands";
 		consoleText += "\n";
 	}
 	
