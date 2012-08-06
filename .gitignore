@@ -1,3 +1,5 @@
 *.pidb
+Temp
 Library
 *.userprefs
+.DS_Store
