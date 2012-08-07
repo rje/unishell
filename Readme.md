@@ -5,6 +5,9 @@ Import the asset bundle into your project or copy the Mono.CSharp.dll and Consol
 
 ## Use
 
+### Binaries
+Binary unitypackage files can be downloaded here: https://github.com/rje/unishell/downloads
+
 ### Basics
 Select Window -> Interactive Shell to open the window.
 
