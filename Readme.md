@@ -3,10 +3,10 @@
 ## Installation
 Import the asset bundle into your project or copy the Mono.CSharp.dll and ConsoleWindow.cs file from this project into your project in an Editor folder.
 
-## Use
-
 ### Binaries
 Binary unitypackage files can be downloaded here: https://github.com/rje/unishell/downloads
+
+## Use
 
 ### Basics
 Select Window -> Interactive Shell to open the window.
