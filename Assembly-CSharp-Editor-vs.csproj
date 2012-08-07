@@ -44,7 +44,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Add-Ons\Unishell\Editor\BuiltinCommands.cs" />
+     <Compile Include="Assets\Add-Ons\Unishell\Editor\CommandEvaluator.cs" />
      <Compile Include="Assets\Add-Ons\Unishell\Editor\ConsoleWindow.cs" />
+     <Compile Include="Assets\Add-Ons\Unishell\Editor\ConsoleWindowConfig.cs" />
      <None Include="Assets\Add-Ons\Unishell\Docs\License.txt" />
  <Reference Include="Assets\Add-Ons\Unishell\Editor\Mono.CSharp">
  <HintPath>Assets\Add-Ons\Unishell\Editor\Mono.CSharp.dll</HintPath>
