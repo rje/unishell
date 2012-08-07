@@ -31,8 +31,9 @@ Then in the config object add that text asset to the Init Scripts list. Type rel
     7
 
 ### Useful types to know
-#### Action<T>, Action<T, T>, etc
+#### Action\<T\>, Action<T, T>, etc
 These are types for any function you want to create in a script that does not have a return value. e.g.
+
     Action<string, int> lotsOfDebugStatements = (text, count) => {
 	    for(int i = 0; i < count; i++) {
 		    Debug.Log(text);
@@ -41,6 +42,7 @@ These are types for any function you want to create in a script that does not ha
 
 #### Func<T, T>, Func<T, T, T>, etc
 These are types for any function you want to create that does have a return value. e.g.
+
     Func<int, int, int> add = (a, b) => {
 	    return a + b;
     };
