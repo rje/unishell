@@ -28,8 +28,28 @@ public class CommandEvaluator {
 	}
 	
 	public void InitEval() {
-		foreach(System.Reflection.Assembly assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-			Mono.CSharp.Evaluator.ReferenceAssembly(assembly);
+		foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+			var path = "";
+			try {
+				path = assembly.CodeBase;
+			}
+			catch(Exception e) {
+				//Debug.Log ("Can't get codebase of assembly, skipping");
+				e.ToString ();
+				continue;
+			}
+			//Debug.Log (path);
+			var toSkip = new string[] { "Cecil.dll" };
+			var shouldSkip = false;
+			foreach(var toCheck in toSkip) {
+				if(path.Contains (toCheck)) {
+					shouldSkip = true;
+					break;
+				}
+			}
+			if(!shouldSkip) {
+				Evaluator.LoadAssembly(assembly.CodeBase);
+			}
 		}
 		Evaluator.Run ("using UnityEngine; using UnityEditor; using System; using System.Collections.Generic;");
 	}

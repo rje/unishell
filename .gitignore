@@ -3,3 +3,5 @@ Temp
 Library
 *.userprefs
 .DS_Store
+config.asset
+config.asset.meta
