@@ -9,7 +9,7 @@ using System.Text;
 
 public class ConsoleWindow : EditorWindow {
 	
-	const string CONFIG_PATH = "Assets/Add-Ons/Unishell/config.asset";
+	const string CONFIG_PATH = "Assets/Plugins/Unishell/config.asset";
 	CommandEvaluator cmdEval;
 	ConsoleWindowConfig cfg;
 	Vector2 scrollPos;
@@ -23,15 +23,16 @@ public class ConsoleWindow : EditorWindow {
 	void Init() {
 		cfg = FindConfig();
 		cmdEval = new CommandEvaluator(cfg);
-		title = "Shell";
+		titleContent = new GUIContent("Unishell Console");
 		cmdEval.ClearEval();
 		cmdEval.InitEval();
 		cmdEval.LoadScripts();
 	}
 	
 	ConsoleWindowConfig FindConfig() {
-		var results = AssetDatabase.LoadAssetAtPath(CONFIG_PATH, typeof(ConsoleWindowConfig)) as ConsoleWindowConfig;
-		if(results == null) {
+        var configs = AssetDatabase.FindAssets("t:ConsoleWindowConfig");
+
+		if(configs == null || configs.Length == 0) {
 			Debug.Log ("Creating config");
 			var cfg = ScriptableObject.CreateInstance<ConsoleWindowConfig>();
 			cfg.foreground = Color.white;
@@ -39,7 +40,9 @@ public class ConsoleWindow : EditorWindow {
 			AssetDatabase.CreateAsset(cfg, CONFIG_PATH);
 			return cfg;
 		}
-		return results;
+        var path = AssetDatabase.GUIDToAssetPath(configs[0]);
+        var asset = AssetDatabase.LoadAssetAtPath<ConsoleWindowConfig>(path);
+		return asset;
 	}
 	
 	void OnGUI() {

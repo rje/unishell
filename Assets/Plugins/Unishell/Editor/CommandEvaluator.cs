@@ -26,35 +26,30 @@ public class CommandEvaluator {
 	public void ClearEval() {
 		Evaluator.Init (new string[] {});
 	}
-	
-	public void InitEval() {
-		foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-			var path = "";
-			try {
-				path = assembly.CodeBase;
-			}
-			catch(Exception e) {
-				//Debug.Log ("Can't get codebase of assembly, skipping");
-				e.ToString ();
-				continue;
-			}
-			//Debug.Log (path);
-			var toSkip = new string[] { "Cecil.dll" };
-			var shouldSkip = false;
-			foreach(var toCheck in toSkip) {
-				if(path.Contains (toCheck)) {
-					shouldSkip = true;
-					break;
-				}
-			}
-			if(!shouldSkip) {
-				Evaluator.LoadAssembly(assembly.CodeBase);
-			}
-		}
-		Evaluator.Run ("using UnityEngine; using UnityEditor; using System; using System.Collections.Generic;");
+
+#pragma warning disable 1635
+#pragma warning disable 0168
+    public void InitEval() {
+		foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            if(assembly == null)
+            {
+                continue;
+            }
+            try
+            {
+                Evaluator.ReferenceAssembly(assembly);
+            }
+            catch(Exception e)
+            {
+            }
+        }
+		Evaluator.Run ("using UnityEngine; using System; using System.Collections.Generic;");
 	}
-	
-	public void LoadScripts() {
+#pragma warning restore 1635
+#pragma warning restore 0168
+
+    public void LoadScripts() {
 		List<string> scripts = config.GetScriptContents();
 		foreach(var toParse in scripts) {
 			Evaluator.Run(toParse);
