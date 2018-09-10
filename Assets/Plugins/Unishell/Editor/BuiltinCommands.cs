@@ -17,7 +17,7 @@ public class BuiltinCommands {
 	void ListVars() {
 		string vars = null;
 		try {
-			vars = Evaluator.GetVars();
+			vars = cmdEval.CsharpEval.GetVars();
 		}
 		catch(Exception e) {
 			e.ToString();
@@ -37,7 +37,7 @@ public class BuiltinCommands {
 	}
 	
 	void ListUsing() {
-		var val = Evaluator.GetUsing();
+		var val = cmdEval.CsharpEval.GetUsing();
 		if(val.Length > 0) {
 			cmdEval.AppendOutput("Current using:");
 			cmdEval.AppendOutput(val);

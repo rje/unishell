@@ -7,52 +7,49 @@ using System.IO;
 using System.Text;
 
 public class CommandEvaluator {
-	public ConsoleWindowConfig config;
 	public string partialCommand = null;
-	public List<String> previousCommands = new List<String>();
+	public List<string> previousCommands = new List<string>();
 	int commandScrollIdx = -1;
 	const int MAX_CMD_BUFFER = 100;
 	public string consoleText = "";
 	public string commandText = "";
 	StringBuilder errInfo = new StringBuilder("");
+    ConsoleReportPrinter printer;
 	public BuiltinCommands builtins;
+
+    public Evaluator CsharpEval;
 	
-	public CommandEvaluator(ConsoleWindowConfig cfg) {
-		config = cfg;
+	public CommandEvaluator() {
 		builtins = new BuiltinCommands(this);
-		Evaluator.MessageOutput = new StringWriter(errInfo);
+		//Evaluator.MessageOutput = new StringWriter(errInfo);
+        InitEval();
 	}
 	
 	public void ClearEval() {
-		Evaluator.Init (new string[] {});
+		//Evaluator.Init (new string[] {});
 	}
 
-#pragma warning disable 1635
-#pragma warning disable 0168
     public void InitEval() {
+        var settings = new CompilerSettings();
 		foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
-            if(assembly == null)
+            if(assembly == null || assembly.FullName.Contains("GeneratedCode") || assembly.FullName.Contains("eval-"))
             {
                 continue;
             }
-            try
-            {
-                Evaluator.ReferenceAssembly(assembly);
-            }
-            catch(Exception e)
-            {
-            }
+            Debug.Log($"Adding {assembly.FullName}");
+            settings.AssemblyReferences.Add(assembly.FullName);
         }
-		Evaluator.Run ("using UnityEngine; using System; using System.Collections.Generic;");
+        printer = new ConsoleReportPrinter(new StringWriter(errInfo));
+        var context = new CompilerContext(settings, printer);
+        CsharpEval = new Evaluator(context);
+		CsharpEval.Run ("using UnityEngine; using System; using System.Collections.Generic;");
 	}
-#pragma warning restore 1635
-#pragma warning restore 0168
 
     public void LoadScripts() {
-		List<string> scripts = config.GetScriptContents();
+		List<string> scripts = ConsoleWindow.GetScriptContents();
 		foreach(var toParse in scripts) {
-			Evaluator.Run(toParse);
+			CsharpEval.Run(toParse);
 		}
 	}
 	
@@ -103,7 +100,7 @@ public class CommandEvaluator {
 	
 	string TryTabComplete(string cmdText) {
 		string prefix;
-		var results = Evaluator.GetCompletions(cmdText, out prefix);
+		var results = CsharpEval.GetCompletions(cmdText, out prefix);
 		if(results != null && results.Length > 1) {
 			cmdText = cmdText + results[0];
 		}
@@ -114,8 +111,8 @@ public class CommandEvaluator {
 		if(commandText == null || commandText.Trim ().Equals ("")) {
 			return;
 		}
-		InitEval ();
 		if(!builtins.CheckBuiltins(commandText)) {
+            printer.Reset();
 			object obj;
 			bool result_set;
 			var command = commandText;
@@ -125,7 +122,7 @@ public class CommandEvaluator {
 				dots = true;
 			}
 			partialCommand = null;
-			string retval = Evaluator.Evaluate(command, out obj, out result_set);
+			string retval = CsharpEval.Evaluate(command, out obj, out result_set);
 			AppendOutput(string.Format ("{0} {1}", dots ? "... " : "> ", commandText));
 			if(retval == null) {
 				if(result_set) {
@@ -137,7 +134,7 @@ public class CommandEvaluator {
 			else {
 				partialCommand = retval;
 			}
-			Evaluator.MessageOutput.Flush();
+            // MessageWriter.Flush();
 			if(errInfo.Length > 0) {
 				AppendOutput(errInfo.ToString());
 				errInfo.Remove(0, errInfo.Length);
