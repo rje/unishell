@@ -1,7 +1,7 @@
 # unishell: Interactive C# Shell for the Unity3d editor
 
 ## Installation
-Import the asset bundle into your project or copy the Mono.CSharp.dll and ConsoleWindow.cs file from this project into your project in an Editor folder.
+Copy Assets/Plugins/Unishell into your project
 
 ### Binaries
 Binary unitypackage files can be downloaded here: https://github.com/rje/unishell/downloads
@@ -9,7 +9,7 @@ Binary unitypackage files can be downloaded here: https://github.com/rje/unishel
 ## Use
 
 ### Basics
-Select Window -> Interactive Shell to open the window.
+Select Window -> Unishell to open the window.
 
 Type "help" to see a list of available commands, otherwise type any valid C# statement or expression.  Some examples of things you can do:
 
@@ -22,7 +22,8 @@ Type "help" to see a list of available commands, otherwise type any valid C# sta
 
 
 ### Scripts
-When you first launch the shell, a config asset is created at Add-Ons/Unishell/config.asset.  It has a variable named "Init Scripts" that you can add TextAssets to, and they will all be evaluated by the shell on first load or when you type "reload" in the shell.  This is handy for creating small functions that you plan on using often. For example, you could create a file called "scripts.txt" with the following contents:
+You can add custom scripts that define helper functions by creating a script directory (default: Resources/Unishell) with the suffix .csx.
+The scripts will all be evaluated by the shell on first load or when you type "reload" in the shell.  This is handy for creating small functions that you plan on using often. For example, you could create a file called "scripts.csx" with the following contents:
 
     Func<int, int, int> add = (a, b) => {
 	    return a + b;
@@ -43,7 +44,7 @@ These are types for any function you want to create in a script that does not ha
 	    }
     };
 
-#### Func\<T, T\>, Func\<T, T, T\>, etc
+#### Func\<T, TResult\>, Func\<T, T, TResult\>, etc
 These are types for any function you want to create that does have a return value. e.g.
 
     Func<int, int, int> add = (a, b) => {
