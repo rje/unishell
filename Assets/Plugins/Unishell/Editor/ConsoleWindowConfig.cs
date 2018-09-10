@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ConsoleWindowConfig : ScriptableObject {
+public class ConsoleWindowConfig {
 	
 	public List<TextAsset> initScripts;
 	public Color foreground;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unishell.CSharp.Editor.Plugins", "unishell.CSharp.Editor.Plugins.csproj", "{8AAB4109-FBB8-557C-D4E9-2AF5CD7CDFAB}"
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unishell", "Assembly-CSharp-Editor-firstpass.csproj", "{E4A6BB4F-7663-E642-1D6F-9AA5BE6BD9AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8AAB4109-FBB8-557C-D4E9-2AF5CD7CDFAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AAB4109-FBB8-557C-D4E9-2AF5CD7CDFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AAB4109-FBB8-557C-D4E9-2AF5CD7CDFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AAB4109-FBB8-557C-D4E9-2AF5CD7CDFAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4A6BB4F-7663-E642-1D6F-9AA5BE6BD9AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A6BB4F-7663-E642-1D6F-9AA5BE6BD9AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A6BB4F-7663-E642-1D6F-9AA5BE6BD9AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A6BB4F-7663-E642-1D6F-9AA5BE6BD9AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,7 +9,6 @@ using System.Text;
 
 public class ConsoleWindow : EditorWindow {
 	
-	const string CONFIG_PATH = "Assets/Plugins/Unishell/config.asset";
 	CommandEvaluator cmdEval;
 	ConsoleWindowConfig cfg;
 	Vector2 scrollPos;
@@ -19,6 +18,67 @@ public class ConsoleWindow : EditorWindow {
         ConsoleWindow window = EditorWindow.GetWindow<ConsoleWindow>();
 		window.Init ();
 	}
+
+    [PreferenceItem("Unishell")]
+    public static void PreferencesGUI()
+    {
+        var bgColor = LoadEditorPrefsColor("unishell_bg");
+        var newColor = EditorGUILayout.ColorField("Background Color", bgColor);
+        if (bgColor != newColor)
+        {
+            SaveEditorPrefsColor("unishell_bg", newColor);
+        }
+
+        var fgColor = LoadEditorPrefsColor("unishell_fg");
+        newColor = EditorGUILayout.ColorField("Foreground Color", fgColor);
+        if (fgColor != newColor)
+        {
+            SaveEditorPrefsColor("unishell_fg", newColor);
+        }
+
+    }
+
+    static List<TextAsset> LoadScriptAssets()
+    {
+        var guids = EditorPrefs.HasKey("unishell_scripts")
+            ? EditorPrefs.GetString("unishell_scripts").Split('|')
+            : new string[] { };
+        var toReturn = new List<TextAsset>();
+        foreach (var guid in guids)
+        {
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            var asset = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
+            if (asset != null)
+            {
+                toReturn.Add(asset);
+            }
+        }
+
+        return toReturn;
+    }
+
+    static void SaveEditorPrefsColor(string prefix, Color toSave)
+    {
+        EditorPrefs.SetFloat(prefix + "_r", toSave.r);
+        EditorPrefs.SetFloat(prefix + "_g", toSave.g);
+        EditorPrefs.SetFloat(prefix + "_b", toSave.b);
+        EditorPrefs.SetFloat(prefix + "_a", toSave.a);
+    }
+
+    static Color LoadEditorPrefsColor(string prefix)
+    {
+        var toReturn = Color.white;
+        var key = string.Format("{0}_r", prefix);
+        toReturn.r = EditorPrefs.HasKey(key) ? EditorPrefs.GetFloat(key) : toReturn.r;
+        key = string.Format("{0}_g", prefix);
+        toReturn.g = EditorPrefs.HasKey(key) ? EditorPrefs.GetFloat(key) : toReturn.g;
+        key = string.Format("{0}_b", prefix);
+        toReturn.b = EditorPrefs.HasKey(key) ? EditorPrefs.GetFloat(key) : toReturn.b;
+        key = string.Format("{0}_a", prefix);
+        toReturn.a = EditorPrefs.HasKey(key) ? EditorPrefs.GetFloat(key) : toReturn.a;
+
+        return toReturn;
+    }
 	
 	void Init() {
 		cfg = FindConfig();
@@ -29,20 +89,15 @@ public class ConsoleWindow : EditorWindow {
 		cmdEval.LoadScripts();
 	}
 	
-	ConsoleWindowConfig FindConfig() {
-        var configs = AssetDatabase.FindAssets("t:ConsoleWindowConfig");
+	ConsoleWindowConfig FindConfig()
+	{
+	    var config = new ConsoleWindowConfig();
+	    config.foreground = Color.white;
+	    config.background = Color.grey;
+        config.initScripts = new List<TextAsset>();
+	    config.DebugAssemblyLoading = false;
 
-		if(configs == null || configs.Length == 0) {
-			Debug.Log ("Creating config");
-			var cfg = ScriptableObject.CreateInstance<ConsoleWindowConfig>();
-			cfg.foreground = Color.white;
-			cfg.background = Color.white;
-			AssetDatabase.CreateAsset(cfg, CONFIG_PATH);
-			return cfg;
-		}
-        var path = AssetDatabase.GUIDToAssetPath(configs[0]);
-        var asset = AssetDatabase.LoadAssetAtPath<ConsoleWindowConfig>(path);
-		return asset;
+	    return config;
 	}
 	
 	void OnGUI() {
@@ -79,8 +134,8 @@ public class ConsoleWindow : EditorWindow {
 		
 		var oldFG = GUI.color;
 		var oldBG = GUI.backgroundColor;
-		GUI.color = cfg.foreground;
-		GUI.backgroundColor = cfg.background;
+	    GUI.color = LoadEditorPrefsColor("unishell_fg");
+	    GUI.backgroundColor = LoadEditorPrefsColor("unishell_bg");
 		
 		EditorGUILayout.TextArea(cmdEval.consoleText);
 		EditorGUILayout.EndScrollView();

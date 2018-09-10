@@ -1,3 +1,5 @@
+/.vs
+*~
 *.pidb
 Temp
 Library
@@ -5,3 +7,5 @@ Library
 .DS_Store
 config.asset
 config.asset.meta
+*.csproj
+*.sln
